@@ -1,6 +1,7 @@
 package com.dev.ed.application.service;
 
 import com.dev.ed.domain.model.request.RequestCustomer;
+import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.ports.in.CustomerIn;
 import lombok.AllArgsConstructor;
@@ -12,22 +13,22 @@ public class CustomerService implements CustomerIn {
 
     private final CustomerIn customerIn;
     @Override
-    public ResponseCustomer create(RequestCustomer request) {
+    public ResponseBase create(RequestCustomer request) {
         return customerIn.create(request);
     }
 
     @Override
-    public Optional<ResponseCustomer> update(Long code, RequestCustomer request) {
+    public ResponseBase update(Long code, RequestCustomer request) {
         return customerIn.update(code, request);
     }
 
     @Override
-    public Optional<ResponseCustomer> get(Long code) {
+    public ResponseBase get(Long code) {
         return customerIn.get(code);
     }
 
     @Override
-    public List<ResponseCustomer> getAll() {
+    public List<ResponseBase> getAll() {
         return customerIn.getAll();
     }
 }
