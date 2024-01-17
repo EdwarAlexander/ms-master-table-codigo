@@ -7,14 +7,13 @@ import com.dev.ed.domain.ports.out.CustomerOut;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.helper.audithelper.CustomerAuditHelper;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
-import com.dev.ed.infrastructure.util.common.TablesName;
+import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import com.dev.ed.infrastructure.util.mapper.CustomerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -22,29 +21,38 @@ public class CustomerRepositoryAdapter implements CustomerOut {
 
     private final CustomerRepository customerRepository;
     @Override
-    public ResponseBase create(RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> create(RequestCustomer request) {
         CustomerEntity customerEntity = CustomerMapper.MAPPER.mapToCustomerEntity(request);
         CustomerAuditHelper.setCustomerAuditCreate(customerEntity,"emoran");
         ResponseCustomer responseCustomerSaved = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customerEntity));
-        return new ResponseBase("Guardado ok", Optional.of(responseCustomerSaved));
+        return new ResponseBase<>("Guardado ok", responseCustomerSaved);
     }
 
     @Override
-    public ResponseBase update(Long code, RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> update(Long code, RequestCustomer request) {
         CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(() -> new IdNotFoundException(TablesName.cliente.name()));
         CustomerEntity customerEntityUpdate = CustomerMapper.MAPPER.mapRequestToEntity(request, customerEntity);
         CustomerAuditHelper.setCustomerAuditModif(customerEntityUpdate, "emoran");
         ResponseCustomer responseCustomerUpdated = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customerEntityUpdate));
-        return new ResponseBase("registro actualizado", Optional.of(responseCustomerUpdated));
+        return new ResponseBase<>("registro actualizado", responseCustomerUpdated);
     }
 
     @Override
-    public ResponseBase get(Long code) {
-        return null;
+    public ResponseBase<ResponseCustomer> get(Long code) {
+        CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.cliente.name()));
+        ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerEntity);
+        return new ResponseBase<>("registro encontrado", responseCustomer);
     }
 
     @Override
-    public List<ResponseBase> getAll() {
+    public ResponseBase<List<ResponseCustomer>> getAll() {
+        List<CustomerEntity> customerList = customerRepository.findAll();
+        List<ResponseCustomer> responseCustomerList = CustomerMapper.MAPPER.mapToResponseCustomerList(customerList);
+        return new ResponseBase<>("Listado", responseCustomerList);
+    }
+
+    @Override
+    public ResponseBase<List<ResponseCustomer>> getAllPagination(Integer page, Integer limit, String sort) {
         return null;
     }
 }

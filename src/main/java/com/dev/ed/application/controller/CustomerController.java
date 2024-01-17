@@ -10,20 +10,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class CustomerController implements ICustomerApi {
 
     private final CustomerService customerService;
     @Override
-    public ResponseEntity<ResponseBase> create(RequestCustomer requestCustomer) {
-        ResponseBase responseBase = customerService.create(requestCustomer);
+    public ResponseEntity<ResponseBase<ResponseCustomer>> create(RequestCustomer requestCustomer) {
+        ResponseBase<ResponseCustomer> responseBase = customerService.create(requestCustomer);
         return new ResponseEntity<>(responseBase, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<ResponseBase> update(Long id, RequestCustomer requestCustomer) {
-        ResponseBase responseBase = customerService.update(id, requestCustomer);
+    public ResponseEntity<ResponseBase<ResponseCustomer>> update(Long id, RequestCustomer requestCustomer) {
+        ResponseBase<ResponseCustomer> responseBase = customerService.update(id, requestCustomer);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseBase<ResponseCustomer>> get(Long id) {
+        ResponseBase<ResponseCustomer> responseBase = customerService.get(id);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAll() {
+        ResponseBase<List<ResponseCustomer>> responseBase = customerService.getAll();
         return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 }

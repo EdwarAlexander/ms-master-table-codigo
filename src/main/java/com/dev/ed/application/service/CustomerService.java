@@ -12,23 +12,30 @@ import java.util.Optional;
 public class CustomerService implements CustomerIn {
 
     private final CustomerIn customerIn;
+
+
     @Override
-    public ResponseBase create(RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> create(RequestCustomer request) {
         return customerIn.create(request);
     }
 
     @Override
-    public ResponseBase update(Long code, RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> update(Long code, RequestCustomer request) {
         return customerIn.update(code, request);
     }
 
     @Override
-    public ResponseBase get(Long code) {
+    public ResponseBase<ResponseCustomer> get(Long code) {
         return customerIn.get(code);
     }
 
     @Override
-    public List<ResponseBase> getAll() {
+    public ResponseBase<List<ResponseCustomer>> getAll() {
         return customerIn.getAll();
+    }
+
+    @Override
+    public ResponseBase<List<ResponseCustomer>> getAllPagination(Integer page, Integer limit, String sort) {
+        return customerIn.getAllPagination(page, limit, sort);
     }
 }

@@ -1,4 +1,4 @@
-package com.dev.ed.infrastructure.util.common;
+package com.dev.ed.infrastructure.util.enums;
 
 public enum TablesName {
     cliente,

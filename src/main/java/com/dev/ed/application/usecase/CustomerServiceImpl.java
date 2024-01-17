@@ -12,25 +12,32 @@ import java.util.Optional;
 
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerIn {
+
     private final CustomerOut customerOut;
 
+
     @Override
-    public ResponseBase create(RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> create(RequestCustomer request) {
         return customerOut.create(request);
     }
 
     @Override
-    public ResponseBase update(Long code, RequestCustomer request) {
+    public ResponseBase<ResponseCustomer> update(Long code, RequestCustomer request) {
         return customerOut.update(code, request);
     }
 
     @Override
-    public ResponseBase get(Long code) {
+    public ResponseBase<ResponseCustomer> get(Long code) {
         return customerOut.get(code);
     }
 
     @Override
-    public List<ResponseBase> getAll() {
+    public ResponseBase<List<ResponseCustomer>> getAll() {
         return customerOut.getAll();
+    }
+
+    @Override
+    public ResponseBase<List<ResponseCustomer>> getAllPagination(Integer page, Integer limit, String sort) {
+        return customerOut.getAllPagination(page, limit, sort);
     }
 }

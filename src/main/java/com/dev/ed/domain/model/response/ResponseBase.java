@@ -11,8 +11,9 @@ import java.util.Optional;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseBase {
+public class ResponseBase<T> {
+
     private String message;
 
-    private Optional data;
+    private T data;
 }

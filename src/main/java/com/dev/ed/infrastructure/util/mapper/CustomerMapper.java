@@ -7,6 +7,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface CustomerMapper {
     CustomerMapper MAPPER = Mappers.getMapper(CustomerMapper.class);
@@ -20,4 +22,6 @@ public interface CustomerMapper {
     @Mapping(source = "requestCustomer.name", target = "name")
     @Mapping(source = "requestCustomer.telePhone", target = "telePhone")
     CustomerEntity mapRequestToEntity(RequestCustomer requestCustomer, CustomerEntity entity);
+
+    List<ResponseCustomer> mapToResponseCustomerList(List<CustomerEntity> customerEntityList);
 }
