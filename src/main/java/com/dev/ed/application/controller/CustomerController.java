@@ -5,6 +5,7 @@ import com.dev.ed.application.service.CustomerService;
 import com.dev.ed.domain.model.request.RequestCustomer;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
+import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,12 @@ public class CustomerController implements ICustomerApi {
     @Override
     public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAll() {
         ResponseBase<List<ResponseCustomer>> responseBase = customerService.getAll();
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAllPagination(Integer page, Integer limit, String sort) {
+        ResponseBase<List<ResponseCustomer>> responseBase = customerService.getAllPagination(page != null ? page : ConstantUtil.DEFAULT_PAGE, limit != null ? limit : ConstantUtil.DEFAULT_LIMIT, sort != null ? sort.toLowerCase() : ConstantUtil.DEFAULT_ASCENDING_VALUE);
         return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 }

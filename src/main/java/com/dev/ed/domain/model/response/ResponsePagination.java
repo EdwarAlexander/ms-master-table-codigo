@@ -5,17 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Optional;
-
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseBase<T> {
+public class ResponsePagination {
 
-    private String message;
-
-    private T data;
-
-    private ResponsePagination pagination;
+    private Integer currPage;
+    private Long totalElements;
+    private Integer totalPages;
 }

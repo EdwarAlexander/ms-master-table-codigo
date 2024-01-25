@@ -21,4 +21,7 @@ public interface ICustomerApi {
     public ResponseEntity<ResponseBase<ResponseCustomer>> get(@PathVariable Long id);
     @GetMapping
     public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAll();
+
+    @GetMapping("/pagination")
+    public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAllPagination(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "sort", required = false) String sort);
 }
