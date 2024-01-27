@@ -9,4 +9,8 @@ public class ConstantUtil {
     public static final Integer DEFAULT_PAGE = 0;
 
     public static final Integer DEFAULT_LIMIT = 10;
+
+    public static final Integer DEFAULT_STATUS_ACTIVE = 1;
+
+    public static final Integer DEFAULT_STATUS_INACTIVE = 0;
 }
