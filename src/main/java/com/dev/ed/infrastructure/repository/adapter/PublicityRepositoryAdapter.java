@@ -9,6 +9,7 @@ import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.helper.audithelper.PublicityAuditHelper;
 import com.dev.ed.infrastructure.repository.PublicityRepository;
+import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.OperationUtil;
 import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
@@ -32,7 +33,7 @@ public class PublicityRepositoryAdapter implements PublicityOut {
     public ResponseBase<ResponsePublicity> create(RequestPublicity request) {
         ResponseBase<ResponsePublicity> result = new ResponseBase<>();
         PublicityEntity publicityEntity = PublicityMapper.MAPPER.mapToPublicityEntity(request);
-        PublicityAuditHelper.setPublicityAuditCreate(publicityEntity, "emoran");
+        PublicityAuditHelper.setPublicityAuditCreate(publicityEntity, ConstantUtil.DEFAULT_USER);
         ResponsePublicity responsePublicitySaved = PublicityMapper.MAPPER.mapToResponsePublicity(publicityRepository.save(publicityEntity));
         result.setMessage("Guardado ok");
         result.setData(responsePublicitySaved);
@@ -44,7 +45,7 @@ public class PublicityRepositoryAdapter implements PublicityOut {
         ResponseBase<ResponsePublicity> result = new ResponseBase<>();
         PublicityEntity publicityEntity = publicityRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.publicidad.name()));
         PublicityEntity publicityEntityUpdate = PublicityMapper.MAPPER.mapRequestToEntity(request, publicityEntity);
-        PublicityAuditHelper.setPublicityAuditModif(publicityEntityUpdate,"emoran");
+        PublicityAuditHelper.setPublicityAuditModif(publicityEntityUpdate, ConstantUtil.DEFAULT_USER);
         ResponsePublicity responsePublicity = PublicityMapper.MAPPER.mapToResponsePublicity(publicityRepository.save(publicityEntityUpdate));
         result.setMessage("Actualizado ok");
         result.setData(responsePublicity);
@@ -76,11 +77,11 @@ public class PublicityRepositoryAdapter implements PublicityOut {
         ResponseBase<List<ResponsePublicity>> result = new ResponseBase<>();
         Page<PublicityEntity> publicityEntityPage = publicityRepository.findAll(PageRequest.of(page,limit, OperationUtil.createSort(sort,"id")));
         if(publicityEntityPage.isEmpty()){
-            result.setPagination(PaginationMapper.MAPPER.setPagination(0,0L,0));
+            result.setPagination(PaginationMapper.MAPPER.setPagination(0,0,0));
             result.setMessage("No hay registro a mostrar");
             result.setData(Collections.emptyList());
         } else {
-            result.setPagination(PaginationMapper.MAPPER.setPagination(publicityEntityPage.getNumber(), Long.valueOf(publicityEntityPage.getNumberOfElements()), publicityEntityPage.getTotalPages()));
+            result.setPagination(PaginationMapper.MAPPER.setPagination(publicityEntityPage.getNumber(), publicityEntityPage.getNumberOfElements(), publicityEntityPage.getTotalPages()));
             result.setMessage("Se hay registro a mostrar");
             result.setData(PublicityMapper.MAPPER.setResponsePublicityList(publicityEntityPage.getContent()));
         }

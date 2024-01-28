@@ -5,6 +5,7 @@ import com.dev.ed.application.service.PublicityService;
 import com.dev.ed.domain.model.request.RequestPublicity;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponsePublicity;
+import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class PublicityController implements IPublicityApi {
 
     @Override
     public ResponseEntity<ResponseBase<List<ResponsePublicity>>> getAllPagination(Integer page, Integer limit, String sort) {
-        ResponseBase<List<ResponsePublicity>> responseBase = publicityService.getAllPagination(page, limit, sort);
+        ResponseBase<List<ResponsePublicity>> responseBase = publicityService.getAllPagination(page != null ? page : ConstantUtil.DEFAULT_PAGE, limit != null ? limit : ConstantUtil.DEFAULT_LIMIT, sort != null ? sort.toLowerCase() : ConstantUtil.DEFAULT_ASCENDING_VALUE);
         return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 }

@@ -1,9 +1,7 @@
 package com.dev.ed.application.controller.api;
 
-import com.dev.ed.domain.model.request.RequestCustomer;
 import com.dev.ed.domain.model.request.RequestPublicity;
 import com.dev.ed.domain.model.response.ResponseBase;
-import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.model.response.ResponsePublicity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

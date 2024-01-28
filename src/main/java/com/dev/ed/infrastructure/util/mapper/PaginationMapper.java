@@ -15,5 +15,5 @@ public interface PaginationMapper {
             @Mapping(target = "totalElements", source = "totalElements"),
             @Mapping(target = "totalPages", source = "totalPages")
     })
-    ResponsePagination setPagination(Integer currPages, Long totalElements, Integer totalPages);
+    ResponsePagination setPagination(Integer currPages, Integer totalElements, Integer totalPages);
 }

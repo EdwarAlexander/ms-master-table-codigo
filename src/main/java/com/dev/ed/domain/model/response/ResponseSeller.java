@@ -9,9 +9,9 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponsePagination {
-
-    private Integer currPage;
-    private Integer totalElements;
-    private Integer totalPages;
+public class ResponseSeller {
+    private Long id;
+    private String name;
+    private Integer status;
+    private String email;
 }

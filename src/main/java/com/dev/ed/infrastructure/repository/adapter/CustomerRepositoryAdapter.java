@@ -7,6 +7,7 @@ import com.dev.ed.domain.ports.out.CustomerOut;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.helper.audithelper.CustomerAuditHelper;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
+import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.OperationUtil;
 import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
@@ -29,7 +30,7 @@ public class CustomerRepositoryAdapter implements CustomerOut {
     public ResponseBase<ResponseCustomer> create(RequestCustomer request) {
         ResponseBase<ResponseCustomer> result = new ResponseBase<>();
         CustomerEntity customerEntity = CustomerMapper.MAPPER.mapToCustomerEntity(request);
-        CustomerAuditHelper.setCustomerAuditCreate(customerEntity,"emoran");
+        CustomerAuditHelper.setCustomerAuditCreate(customerEntity, ConstantUtil.DEFAULT_USER);
         ResponseCustomer responseCustomerSaved = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customerEntity));
         result.setMessage("Guardado Ok");
         result.setData(responseCustomerSaved);
@@ -41,7 +42,7 @@ public class CustomerRepositoryAdapter implements CustomerOut {
         ResponseBase<ResponseCustomer> result = new ResponseBase<>();
         CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(() -> new IdNotFoundException(TablesName.cliente.name()));
         CustomerEntity customerEntityUpdate = CustomerMapper.MAPPER.mapRequestToEntity(request, customerEntity);
-        CustomerAuditHelper.setCustomerAuditModif(customerEntityUpdate, "emoran");
+        CustomerAuditHelper.setCustomerAuditModif(customerEntityUpdate, ConstantUtil.DEFAULT_USER);
         ResponseCustomer responseCustomerUpdated = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customerEntityUpdate));
         result.setMessage("Actualizado Ok");
         result.setData(responseCustomerUpdated);
@@ -73,11 +74,11 @@ public class CustomerRepositoryAdapter implements CustomerOut {
         ResponseBase<List<ResponseCustomer>> result = new ResponseBase<>();
         Page<CustomerEntity> customerEntityPage = customerRepository.findAll(PageRequest.of(page,limit, OperationUtil.createSort(sort,"id")));
         if(customerEntityPage.isEmpty()){
-            result.setPagination(PaginationMapper.MAPPER.setPagination(0,0L,0));
+            result.setPagination(PaginationMapper.MAPPER.setPagination(0,0,0));
             result.setMessage("No hay registro a mostrar");
             result.setData(Collections.emptyList());
         } else {
-            result.setPagination(PaginationMapper.MAPPER.setPagination(customerEntityPage.getNumber(),customerEntityPage.getTotalElements(),customerEntityPage.getTotalPages()));
+            result.setPagination(PaginationMapper.MAPPER.setPagination(customerEntityPage.getNumber(),customerEntityPage.getNumberOfElements(),customerEntityPage.getTotalPages()));
             result.setMessage("Se hay registro a mostrar");
             result.setData(CustomerMapper.MAPPER.mapToResponseCustomerList(customerEntityPage.getContent()));
         }
