@@ -7,7 +7,6 @@ import com.dev.ed.domain.ports.in.CustomerIn;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 @AllArgsConstructor
 public class CustomerService implements CustomerIn {
 

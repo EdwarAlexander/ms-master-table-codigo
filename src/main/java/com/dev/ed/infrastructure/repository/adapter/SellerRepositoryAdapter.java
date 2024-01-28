@@ -90,7 +90,6 @@ public class SellerRepositoryAdapter implements SellerOut {
     public ResponseBase<ResponseSeller> delete(Long id) {
         ResponseBase<ResponseSeller> result = new ResponseBase<>();
         SellersEntity sellersEntity = sellerRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
-        //SellersEntity sellersEntityUpdated = SellerMapper.MAPPER.mapRequestToEntityStatus(ConstantUtil.DEFAULT_STATUS_INACTIVE, sellersEntity);
         SellerAuditHelper.setSellerAuditDel(sellersEntity, ConstantUtil.DEFAULT_USER);
         ResponseSeller responseSeller = SellerMapper.MAPPER.mapToResponseSeller(sellerRepository.save(sellersEntity));
         result.setMessage("Registro eliminado con Exito");

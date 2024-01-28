@@ -74,3 +74,21 @@ comment on column sellers.user_modif is 'Usuario que modifica el registro';
 comment on column sellers.date_modif is 'Fecha de actualización el registro';
 comment on column sellers.user_del is 'Usuario que elimina el registro';
 comment on column sellers.date_del is 'Fecha de eliminación del registro';
+
+-- documentacion de la tabla captación
+create table captures(
+    id_capture serial primary key,
+    date_capture date null,
+    observation varchar(250),
+    id_customer serial,
+    id_seller serial,
+    status int,
+    user_create VARCHAR(45),
+    date_create TIMESTAMP,
+    user_modif VARCHAR(45),
+    date_modif TIMESTAMP,
+    user_del VARCHAR(45),
+    date_del TIMESTAMP,
+    FOREIGN KEY (id_customer) REFERENCES customers(id_customer),
+    FOREIGN key (id_seller) REFERENCES sellers(id_seller)
+);
