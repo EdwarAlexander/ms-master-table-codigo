@@ -92,3 +92,10 @@ create table captures(
     FOREIGN KEY (id_customer) REFERENCES customers(id_customer),
     FOREIGN key (id_seller) REFERENCES sellers(id_seller)
 );
+
+
+create table capture_publicity (
+	id_capture serial NOT NULL,
+	id_publicity serial NOT NULL,
+	CONSTRAINT capture_publicity_pkey PRIMARY KEY (id_capture, id_publicity)
+);

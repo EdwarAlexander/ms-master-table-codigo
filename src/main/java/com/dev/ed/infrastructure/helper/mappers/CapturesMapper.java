@@ -1,15 +1,17 @@
 package com.dev.ed.infrastructure.helper.mappers;
 
+import com.dev.ed.domain.model.request.RequestCapturePublicity;
 import com.dev.ed.domain.model.request.RequestCaptures;
 import com.dev.ed.domain.model.response.ResponseCaptures;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.model.response.ResponseSeller;
 import com.dev.ed.infrastructure.entity.CapturesEntity;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
+import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.entity.SellersEntity;
-import com.dev.ed.infrastructure.util.common.DateUtil;
 
-import java.text.ParseException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CapturesMapper {
 
@@ -22,6 +24,7 @@ public class CapturesMapper {
         capturesEntity.setObservation(requestCaptures.getObservation());
         capturesEntity.setCustomerEntity(customerEntity);
         capturesEntity.setSellersEntity(sellersEntity);
+        capturesEntity.setPublicityEntitySet(setPublicityEntitySet(requestCaptures.getPublicities()));
         return capturesEntity;
     }
 
@@ -68,5 +71,22 @@ public class CapturesMapper {
         responseSeller.setEmail(sellersEntity.getEmail());
 
         return responseSeller;
+    }
+
+    private static PublicityEntity setPublicityEntity(RequestCapturePublicity requestCapturePublicity){
+        if(requestCapturePublicity == null){
+            return null;
+        }
+        PublicityEntity entity = new PublicityEntity();
+        entity.setId(requestCapturePublicity.getIdPublicity());
+        return entity;
+    }
+
+    private static Set<PublicityEntity> setPublicityEntitySet(Set<RequestCapturePublicity> requestCapturePublicitySet){
+        Set<PublicityEntity> entitySet = new HashSet<>();
+        for(RequestCapturePublicity requestCapturePublicity : requestCapturePublicitySet){
+            entitySet.add(setPublicityEntity(requestCapturePublicity));
+        }
+        return entitySet;
     }
 }

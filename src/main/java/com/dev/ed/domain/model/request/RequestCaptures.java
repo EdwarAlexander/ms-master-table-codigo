@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -25,5 +26,7 @@ public class RequestCaptures {
     private Long seller_id;
 
     private String observation;
+
+    private Set<RequestCapturePublicity> publicities;
 
 }

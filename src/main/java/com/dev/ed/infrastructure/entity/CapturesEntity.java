@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -57,4 +59,12 @@ public class CapturesEntity {
 
     @Column(name = "date_del", nullable = true)
     private Timestamp dateDel;
+
+    @ManyToMany
+    @JoinTable(
+            name = "capture_publicity",
+            joinColumns = @JoinColumn(name = "id_capture"),
+            inverseJoinColumns = @JoinColumn(name = "id_publicity")
+    )
+    private Set<PublicityEntity> publicityEntitySet = new HashSet<>();
 }
