@@ -4,6 +4,7 @@ import com.dev.ed.domain.model.request.RequestCapturePublicity;
 import com.dev.ed.domain.model.request.RequestCaptures;
 import com.dev.ed.domain.model.response.ResponseCaptures;
 import com.dev.ed.domain.model.response.ResponseCustomer;
+import com.dev.ed.domain.model.response.ResponsePublicity;
 import com.dev.ed.domain.model.response.ResponseSeller;
 import com.dev.ed.infrastructure.entity.CapturesEntity;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
@@ -39,7 +40,7 @@ public class CapturesMapper {
         responseCaptures.setObservation(capturesEntity.getObservation());
         responseCaptures.setResponseCustomer(setResponseCustomer(capturesEntity.getCustomerEntity()));
         responseCaptures.setResponseSeller(setResponseSeller(capturesEntity.getSellersEntity()));
-
+        responseCaptures.setPublicities(setResponsePublicitySet(capturesEntity.getPublicityEntitySet()));
         return responseCaptures;
     }
 
@@ -86,6 +87,24 @@ public class CapturesMapper {
         Set<PublicityEntity> entitySet = new HashSet<>();
         for(RequestCapturePublicity requestCapturePublicity : requestCapturePublicitySet){
             entitySet.add(setPublicityEntity(requestCapturePublicity));
+        }
+        return entitySet;
+    }
+
+    private static ResponsePublicity setResponsePublicity(PublicityEntity publicityEntity){
+        if(publicityEntity == null){
+            return null;
+        }
+        ResponsePublicity responsePublicity = new ResponsePublicity();
+        responsePublicity.setId(publicityEntity.getId());
+        responsePublicity.setName(publicityEntity.getName());
+        responsePublicity.setStatus(publicityEntity.getStatus());
+        return responsePublicity;
+    }
+    private static Set<ResponsePublicity> setResponsePublicitySet(Set<PublicityEntity> publicityEntitySet){
+        Set<ResponsePublicity> entitySet = new HashSet<>();
+        for(PublicityEntity publicityEntity: publicityEntitySet){
+            entitySet.add(setResponsePublicity(publicityEntity));
         }
         return entitySet;
     }

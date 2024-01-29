@@ -3,6 +3,7 @@ package com.dev.ed.application.service;
 import com.dev.ed.domain.model.request.RequestCaptures;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCaptures;
+import com.dev.ed.domain.model.response.ResponseCapturesPage;
 import com.dev.ed.domain.ports.in.CapturesIn;
 import lombok.AllArgsConstructor;
 
@@ -35,5 +36,10 @@ public class CapturesService implements CapturesIn {
     @Override
     public ResponseBase<List<ResponseCaptures>> getAllPagination(Integer page, Integer limit, String sort) {
         return capturesIn.getAllPagination(page, limit, sort);
+    }
+
+    @Override
+    public ResponseBase<List<ResponseCapturesPage>> getCapturePage(Integer page, Integer limit, String sort) {
+        return capturesIn.getCapturePage(page, limit, sort);
     }
 }

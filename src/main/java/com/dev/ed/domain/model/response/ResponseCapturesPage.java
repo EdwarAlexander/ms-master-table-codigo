@@ -5,26 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.Set;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseCaptures {
+public class ResponseCapturesPage {
 
     private Long id;
 
     private LocalDate dateCapture;
 
-    private ResponseCustomer responseCustomer;
+    private String nameCustomer;
 
-    private ResponseSeller responseSeller;
-
-    private String observation;
-
-    private Set<ResponsePublicity> publicities;
+    private String nameSeller;
 }

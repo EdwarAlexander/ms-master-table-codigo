@@ -5,6 +5,9 @@ import com.dev.ed.application.service.CapturesService;
 import com.dev.ed.domain.model.request.RequestCaptures;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCaptures;
+import com.dev.ed.domain.model.response.ResponseCapturesPage;
+import com.dev.ed.domain.model.response.ResponseSeller;
+import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +34,8 @@ public class CapturesController implements ICapturesApi {
 
     @Override
     public ResponseEntity<ResponseBase<ResponseCaptures>> get(Long id) {
-        return null;
+        ResponseBase<ResponseCaptures> responseBase = capturesService.get(id);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 
     @Override
@@ -47,5 +51,11 @@ public class CapturesController implements ICapturesApi {
     @Override
     public ResponseEntity<ResponseBase<ResponseCaptures>> delete(Long id) {
         return null;
+    }
+
+    @Override
+    public ResponseEntity<ResponseBase<List<ResponseCapturesPage>>> getAllPage(Integer page, Integer limit, String sort) {
+        ResponseBase<List<ResponseCapturesPage>> responseBase = capturesService.getCapturePage(page != null ? page : ConstantUtil.DEFAULT_PAGE, limit != null ? limit : ConstantUtil.DEFAULT_LIMIT, sort != null ? sort.toLowerCase() : ConstantUtil.DEFAULT_DESCENDING_VALUE);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 }

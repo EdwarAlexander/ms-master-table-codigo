@@ -3,6 +3,7 @@ package com.dev.ed.application.controller.api;
 import com.dev.ed.domain.model.request.RequestCaptures;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCaptures;
+import com.dev.ed.domain.model.response.ResponseCapturesPage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,4 +26,6 @@ public interface ICapturesApi {
     public ResponseEntity<ResponseBase<List<ResponseCaptures>>> getAllPagination(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "sort", required = false) String sort);
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseBase<ResponseCaptures>> delete(@PathVariable Long id);
+    @GetMapping("/page")
+    public ResponseEntity<ResponseBase<List<ResponseCapturesPage>>> getAllPage(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "sort", required = false) String sort);
 }
