@@ -49,7 +49,16 @@ public class CapturesRepositoryAdapter implements CapturesOut {
 
     @Override
     public ResponseBase<ResponseCaptures> update(Long code, RequestCaptures request) {
-        return null;
+        ResponseBase<ResponseCaptures> result = new ResponseBase<>();
+        CapturesEntity capturesEntity = capturesRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.captacion.name()));
+        CustomerEntity customerEntity = customerRepository.findById(request.getCustomer_id()).orElseThrow(()-> new IdNotFoundException(TablesName.cliente.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(request.getSeller_id()).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        CapturesEntity capturesEntityUpdated = CapturesMapper.mapToCaptureEntityUpdated(request, customerEntity, sellersEntity, capturesEntity);
+        CapturesAuditHelper.setCapturesAuditModif(capturesEntityUpdated, ConstantUtil.DEFAULT_USER);
+        ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesRepository.save(capturesEntityUpdated));
+        result.setMessage("registro actualizado");
+        result.setData(responseCaptures);
+        return result;
     }
 
     @Override
@@ -64,12 +73,28 @@ public class CapturesRepositoryAdapter implements CapturesOut {
 
     @Override
     public ResponseBase<List<ResponseCaptures>> getAll() {
-        return null;
+        ResponseBase<List<ResponseCaptures>> result = new ResponseBase<>();
+        List<CapturesEntity> capturesEntityList = capturesRepository.findAll();
+        List<ResponseCaptures> responseCapturesList = CapturesMapper.mapToResponseCapturesList(capturesEntityList);
+        result.setData(responseCapturesList);
+        result.setMessage("listado de registros");
+        return result;
     }
 
     @Override
     public ResponseBase<List<ResponseCaptures>> getAllPagination(Integer page, Integer limit, String sort) {
-        return null;
+        ResponseBase<List<ResponseCaptures>> result = new ResponseBase<>();
+        Page<CapturesEntity> capturesEntityPage = capturesRepository.findAll(PageRequest.of(page,limit, OperationUtil.createSort(sort,"id")));
+        if(capturesEntityPage.isEmpty()){
+            result.setPagination(PaginationMapper.MAPPER.setPagination(0,0,0));
+            result.setMessage("No hay registro a mostrar");
+            result.setData(Collections.emptyList());
+        } else {
+            result.setPagination(PaginationMapper.MAPPER.setPagination(capturesEntityPage.getNumber(), capturesEntityPage.getNumberOfElements(), capturesEntityPage.getTotalPages()));
+            result.setMessage("Se hay registro a mostrar");
+            result.setData(CapturesMapper.mapToResponseCapturesList(capturesEntityPage.getContent()));
+        }
+        return result;
     }
 
     @Override
@@ -85,6 +110,18 @@ public class CapturesRepositoryAdapter implements CapturesOut {
             result.setMessage("Se hay registro a mostrar");
             result.setData(responseCapturesPages.getContent());
         }
+        return result;
+    }
+
+    @Override
+    public ResponseBase<ResponseCaptures> delete(Long id) {
+        ResponseBase<ResponseCaptures> result = new ResponseBase<>();
+        CapturesEntity capturesEntity = capturesRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.captacion.name()));
+        CapturesEntity capturesEntityUpdated = CapturesMapper.mapToCaptureEntityDelete(capturesEntity);
+        CapturesAuditHelper.setCapturesAuditDel(capturesEntityUpdated, ConstantUtil.DEFAULT_USER);
+        ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesRepository.save(capturesEntityUpdated));
+        result.setMessage("registro eliminado");
+        result.setData(responseCaptures);
         return result;
     }
 }

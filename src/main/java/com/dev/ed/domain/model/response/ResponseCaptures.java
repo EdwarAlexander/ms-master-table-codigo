@@ -26,5 +26,7 @@ public class ResponseCaptures {
 
     private String observation;
 
+    private Integer status;
+
     private Set<ResponsePublicity> publicities;
 }

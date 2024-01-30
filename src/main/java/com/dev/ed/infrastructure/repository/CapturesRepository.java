@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CapturesRepository extends JpaRepository<CapturesEntity, Long> {
 
-    @Query("SELECT new com.dev.ed.domain.model.response.ResponseCapturesPage(capture.id,capture.dateCapture,CONCAT(customer.name,' ',customer.lastName),seller.name) "
+    @Query("SELECT new com.dev.ed.domain.model.response.ResponseCapturesPage(capture.id,capture.dateCapture,CONCAT(customer.name,' ',customer.lastName),seller.name,capture.status,capture.observation) "
             +"FROM CapturesEntity capture "
             +"INNER JOIN CustomerEntity customer "
             +"ON customer.id = capture.customerEntity.id "

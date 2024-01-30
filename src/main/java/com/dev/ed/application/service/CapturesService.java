@@ -42,4 +42,9 @@ public class CapturesService implements CapturesIn {
     public ResponseBase<List<ResponseCapturesPage>> getCapturePage(Integer page, Integer limit, String sort) {
         return capturesIn.getCapturePage(page, limit, sort);
     }
+
+    @Override
+    public ResponseBase<ResponseCaptures> delete(Long id) {
+        return capturesIn.delete(id);
+    }
 }

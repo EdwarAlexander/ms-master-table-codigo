@@ -20,4 +20,8 @@ public class ResponseCapturesPage {
     private String nameCustomer;
 
     private String nameSeller;
+
+    private Integer status;
+
+    private String observation;
 }

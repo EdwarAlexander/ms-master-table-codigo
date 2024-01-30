@@ -11,7 +11,9 @@ import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.entity.SellersEntity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CapturesMapper {
@@ -29,6 +31,45 @@ public class CapturesMapper {
         return capturesEntity;
     }
 
+    public static CapturesEntity mapToCaptureEntityUpdated(RequestCaptures requestCaptures, CustomerEntity customerEntity, SellersEntity sellersEntity, CapturesEntity captures) {
+        if(requestCaptures == null){
+            return null;
+        }
+        CapturesEntity capturesEntity = new CapturesEntity();
+
+        capturesEntity.setId(captures.getId());
+        capturesEntity.setStatus(captures.getStatus());
+        capturesEntity.setDateCreate(captures.getDateCreate());
+        capturesEntity.setUserCreate(captures.getUserCreate());
+
+        capturesEntity.setDateCapture(requestCaptures.getDateCapture());
+        capturesEntity.setObservation(requestCaptures.getObservation());
+        capturesEntity.setCustomerEntity(customerEntity);
+        capturesEntity.setSellersEntity(sellersEntity);
+        capturesEntity.setPublicityEntitySet(setPublicityEntitySet(requestCaptures.getPublicities()));
+        return capturesEntity;
+    }
+
+    public static CapturesEntity mapToCaptureEntityDelete(CapturesEntity captures) {
+        if(captures == null){
+            return null;
+        }
+        CapturesEntity capturesEntity = new CapturesEntity();
+
+        capturesEntity.setId(captures.getId());
+        capturesEntity.setDateCreate(captures.getDateCreate());
+        capturesEntity.setUserCreate(captures.getUserCreate());
+        capturesEntity.setDateModif(captures.getDateModif());
+        capturesEntity.setUserModif(captures.getUserModif());
+
+        capturesEntity.setDateCapture(captures.getDateCapture());
+        capturesEntity.setObservation(captures.getObservation());
+        capturesEntity.setCustomerEntity(captures.getCustomerEntity());
+        capturesEntity.setSellersEntity(captures.getSellersEntity());
+        capturesEntity.setPublicityEntitySet(captures.getPublicityEntitySet());
+        return capturesEntity;
+    }
+
     public static ResponseCaptures mapToResponseCaptures(CapturesEntity capturesEntity){
         if(capturesEntity == null){
             return null;
@@ -38,10 +79,22 @@ public class CapturesMapper {
         responseCaptures.setId(capturesEntity.getId());
         responseCaptures.setDateCapture(capturesEntity.getDateCapture());
         responseCaptures.setObservation(capturesEntity.getObservation());
+        responseCaptures.setStatus(capturesEntity.getStatus());
         responseCaptures.setResponseCustomer(setResponseCustomer(capturesEntity.getCustomerEntity()));
         responseCaptures.setResponseSeller(setResponseSeller(capturesEntity.getSellersEntity()));
         responseCaptures.setPublicities(setResponsePublicitySet(capturesEntity.getPublicityEntitySet()));
         return responseCaptures;
+    }
+
+    public static List<ResponseCaptures> mapToResponseCapturesList(List<CapturesEntity> capturesEntityList){
+        if(capturesEntityList == null){
+            return null;
+        }
+        List<ResponseCaptures> responseCapturesList = new ArrayList<>();
+        for(CapturesEntity captures: capturesEntityList){
+            responseCapturesList.add(mapToResponseCaptures(captures));
+        }
+        return responseCapturesList;
     }
 
     private static ResponseCustomer setResponseCustomer(CustomerEntity customerEntity){

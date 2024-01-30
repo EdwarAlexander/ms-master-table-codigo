@@ -29,7 +29,8 @@ public class CapturesController implements ICapturesApi {
 
     @Override
     public ResponseEntity<ResponseBase<ResponseCaptures>> update(Long id, RequestCaptures requestCaptures) {
-        return null;
+        ResponseBase<ResponseCaptures> responseBase = capturesService.update(id, requestCaptures);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 
     @Override
@@ -40,17 +41,20 @@ public class CapturesController implements ICapturesApi {
 
     @Override
     public ResponseEntity<ResponseBase<List<ResponseCaptures>>> getAll() {
-        return null;
+        ResponseBase<List<ResponseCaptures>> responseBase = capturesService.getAll();
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ResponseBase<List<ResponseCaptures>>> getAllPagination(Integer page, Integer limit, String sort) {
-        return null;
+        ResponseBase<List<ResponseCaptures>> responseBase = capturesService.getAllPagination(page != null ? page : ConstantUtil.DEFAULT_PAGE, limit != null ? limit : ConstantUtil.DEFAULT_LIMIT, sort != null ? sort.toLowerCase() : ConstantUtil.DEFAULT_ASCENDING_VALUE);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ResponseBase<ResponseCaptures>> delete(Long id) {
-        return null;
+        ResponseBase<ResponseCaptures> responseBase = capturesService.delete(id);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
 
     @Override

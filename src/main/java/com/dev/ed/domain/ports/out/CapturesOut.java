@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface CapturesOut extends Crud<RequestCaptures, ResponseCaptures, Long> {
     ResponseBase<List<ResponseCapturesPage>> getCapturePage(Integer page, Integer limit, String sort);
+
+    ResponseBase<ResponseCaptures> delete(Long id);
 }
