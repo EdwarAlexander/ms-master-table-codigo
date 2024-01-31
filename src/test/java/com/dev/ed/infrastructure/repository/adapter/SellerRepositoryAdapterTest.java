@@ -7,6 +7,7 @@ import com.dev.ed.helper.SellerEntityHelper;
 import com.dev.ed.infrastructure.entity.SellersEntity;
 import com.dev.ed.infrastructure.repository.SellerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
+import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -47,6 +48,15 @@ class SellerRepositoryAdapterTest {
     }
 
     @Test
+    void get_Error(){
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            sellerRepositoryAdapter.get(1L);
+        });
+        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+    }
+
+    @Test
     void getAllPagination(){
         Mockito.when(sellerRepository.findAll(Mockito.any(Pageable.class))).thenReturn(SellerEntityHelper.createSellersEntityPage());
         ResponseBase<List<ResponseSeller>> result = sellerRepositoryAdapter.getAllPagination(ConstantUtil.DEFAULT_PAGE,ConstantUtil.DEFAULT_LIMIT, ConstantUtil.DEFAULT_ASCENDING_VALUE);
@@ -69,6 +79,16 @@ class SellerRepositoryAdapterTest {
     }
 
     @Test
+    void update_Error(){
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            sellerRepositoryAdapter.update(1L, RequestSellerHelper.createRequestSeller());
+        });
+        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+    }
+
+    @Test
     void create(){
         ResponseBase<ResponseSeller> result = sellerRepositoryAdapter.create(RequestSellerHelper.createRequestSeller());
         assertNotNull(result);
@@ -79,5 +99,14 @@ class SellerRepositoryAdapterTest {
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
         ResponseBase<ResponseSeller> result = sellerRepositoryAdapter.delete(1L);
         assertNotNull(result);
+    }
+
+    @Test
+    void delete_Error(){
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            sellerRepositoryAdapter.delete(1L);
+        });
+        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
     }
 }

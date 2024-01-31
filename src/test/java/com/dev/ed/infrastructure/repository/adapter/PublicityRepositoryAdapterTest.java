@@ -11,6 +11,7 @@ import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.repository.PublicityRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
+import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,8 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PublicityRepositoryAdapterTest {
     @InjectMocks
@@ -52,6 +53,15 @@ class PublicityRepositoryAdapterTest {
     }
 
     @Test
+    void get_Error(){
+        Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            publicityRepositoryAdapter.get(1L);
+        });
+        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());
+    }
+
+    @Test
     void getAllPagination(){
         Mockito.when(publicityRepository.findAll(Mockito.any(Pageable.class))).thenReturn(PublicityEntityHelper.createPublicityEntityPage());
         ResponseBase<List<ResponsePublicity>> result = publicityRepositoryAdapter.getAllPagination(ConstantUtil.DEFAULT_PAGE,ConstantUtil.DEFAULT_LIMIT, ConstantUtil.DEFAULT_ASCENDING_VALUE);
@@ -71,6 +81,15 @@ class PublicityRepositoryAdapterTest {
         Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(PublicityEntityHelper.createPublicityEntity()));
         ResponseBase<ResponsePublicity> result = publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());
         assertNotNull(result);
+    }
+
+    @Test
+    void update_Error(){
+        Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());
+        });
+        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());
     }
 
     @Test

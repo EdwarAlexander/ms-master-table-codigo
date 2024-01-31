@@ -9,6 +9,7 @@ import com.dev.ed.infrastructure.repository.CapturesRepository;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.repository.SellerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
+import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -53,6 +54,15 @@ class CapturesRepositoryAdapterTest {
     }
 
     @Test
+    void get_Error(){
+        Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.get(1L);
+        });
+        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
+    }
+
+    @Test
     void getAllPagination(){
         Mockito.when(capturesRepository.findAll(Mockito.any(Pageable.class))).thenReturn(CaptureEntityHelper.createCapturesEntityPage());
         ResponseBase<List<ResponseCaptures>> result = capturesRepositoryAdapter.getAllPagination(ConstantUtil.DEFAULT_PAGE,ConstantUtil.DEFAULT_LIMIT, ConstantUtil.DEFAULT_ASCENDING_VALUE);
@@ -77,6 +87,38 @@ class CapturesRepositoryAdapterTest {
     }
 
     @Test
+    void update_Error_Capture(){
+        Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
+        });
+        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
+    }
+
+    @Test
+    void update_Error_Customer(){
+        Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
+        });
+        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+    }
+
+    @Test
+    void update_Error_Seller(){
+        Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
+        });
+        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+    }
+    @Test
     void create(){
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
@@ -85,10 +127,39 @@ class CapturesRepositoryAdapterTest {
     }
 
     @Test
+    void create_Error_Customer(){
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
+        });
+        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+    }
+
+    @Test
+    void create_Error_Seller(){
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
+        });
+        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+    }
+
+    @Test
     void delete(){
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
         ResponseBase<ResponseCaptures> result = capturesRepositoryAdapter.delete(1L);
         assertNotNull(result);
+    }
+
+    @Test
+    void delete_Error(){
+        Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            capturesRepositoryAdapter.delete(1L);
+        });
+        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
     }
 
     @Test

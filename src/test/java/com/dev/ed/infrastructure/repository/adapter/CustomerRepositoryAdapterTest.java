@@ -7,6 +7,7 @@ import com.dev.ed.helper.RequestCustomerHelper;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
+import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -46,6 +47,16 @@ class CustomerRepositoryAdapterTest {
         ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.get(1L);
         assertNotNull(result);
     }
+
+    @Test
+    void get_Error(){
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            customerRepositoryAdapter.get(1L);
+        });
+        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+    }
+
     @Test
     void getAllPagination(){
         Mockito.when(customerRepository.findAll(Mockito.any(Pageable.class))).thenReturn(CustomerEntityHelper.createCustomerEntityPage());
@@ -65,6 +76,15 @@ class CustomerRepositoryAdapterTest {
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
         ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.update(1L, RequestCustomerHelper.createRequesCustomer());
         assertNotNull(result);
+    }
+
+    @Test
+    void update_Error(){
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+            customerRepositoryAdapter.update(1L, RequestCustomerHelper.createRequesCustomer());
+        });
+        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
     }
 
     @Test
