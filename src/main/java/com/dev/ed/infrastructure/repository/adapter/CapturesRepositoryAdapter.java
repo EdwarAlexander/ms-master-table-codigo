@@ -18,7 +18,6 @@ import com.dev.ed.infrastructure.util.common.OperationUtil;
 import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import com.dev.ed.infrastructure.util.mapper.PaginationMapper;
-import com.dev.ed.infrastructure.util.mapper.SellerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
