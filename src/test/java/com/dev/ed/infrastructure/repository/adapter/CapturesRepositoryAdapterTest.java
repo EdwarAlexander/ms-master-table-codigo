@@ -2,10 +2,9 @@ package com.dev.ed.infrastructure.repository.adapter;
 
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCaptures;
-import com.dev.ed.domain.model.response.ResponseSeller;
+import com.dev.ed.domain.model.response.ResponseCapturesPage;
 import com.dev.ed.helper.*;
 import com.dev.ed.infrastructure.entity.CapturesEntity;
-import com.dev.ed.infrastructure.entity.SellersEntity;
 import com.dev.ed.infrastructure.repository.CapturesRepository;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.repository.SellerRepository;
@@ -88,9 +87,22 @@ class CapturesRepositoryAdapterTest {
     @Test
     void delete(){
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
-        //Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
-        //Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
         ResponseBase<ResponseCaptures> result = capturesRepositoryAdapter.delete(1L);
         assertNotNull(result);
+    }
+
+    @Test
+    void getCapturePage(){
+        Mockito.when(capturesRepository.getCapture(Mockito.any(Pageable.class))).thenReturn(ResponseCapturesPageHelper.createResponseCapturesPagePage());
+        ResponseBase<List<ResponseCapturesPage>> result = capturesRepositoryAdapter.getCapturePage(ConstantUtil.DEFAULT_PAGE,ConstantUtil.DEFAULT_LIMIT, ConstantUtil.DEFAULT_ASCENDING_VALUE);
+        assertNotNull(result);
+    }
+
+    @Test
+    void getCapturePage_EMPTY(){
+        Mockito.when(capturesRepository.getCapture(Mockito.any(Pageable.class))).thenReturn(new PageImpl<ResponseCapturesPage>(new ArrayList<ResponseCapturesPage>()));
+        ResponseBase<List<ResponseCapturesPage>> result = capturesRepositoryAdapter.getCapturePage(ConstantUtil.DEFAULT_PAGE,ConstantUtil.DEFAULT_LIMIT, ConstantUtil.DEFAULT_ASCENDING_VALUE);
+        assertNotNull(result);
+        assertTrue(result.getData().isEmpty());
     }
 }
