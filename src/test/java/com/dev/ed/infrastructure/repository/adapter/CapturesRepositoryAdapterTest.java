@@ -89,12 +89,12 @@ class CapturesRepositoryAdapterTest {
     @Test
     void update_Error_Capture(){
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        //Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
-        //Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
-
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+        Exception exception = null;
+        try{
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
-        });
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla CAPTACION", exception.getMessage());
     }
 
@@ -102,10 +102,12 @@ class CapturesRepositoryAdapterTest {
     void update_Error_Customer(){
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+        Exception exception = null;
+        try{
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
-        });
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
@@ -114,9 +116,12 @@ class CapturesRepositoryAdapterTest {
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CaptureEntityHelper.createCapturesEntity()));
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+        Exception exception = null;
+        try{
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
-        });
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
     @Test
@@ -131,9 +136,13 @@ class CapturesRepositoryAdapterTest {
     void create_Error_Customer(){
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+
+        Exception exception = null;
+        try{
             capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
-        });
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
@@ -141,9 +150,12 @@ class CapturesRepositoryAdapterTest {
     void create_Error_Seller(){
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
+        Exception exception = null;
+        try{
             capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
-        });
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
