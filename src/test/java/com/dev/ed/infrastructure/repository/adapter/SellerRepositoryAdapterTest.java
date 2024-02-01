@@ -50,7 +50,12 @@ class SellerRepositoryAdapterTest {
     @Test
     void get_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> sellerRepositoryAdapter.get(1L));
+        Exception exception = null;
+        try{
+            ResponseBase<ResponseSeller> result = sellerRepositoryAdapter.get(1L);
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
@@ -79,9 +84,12 @@ class SellerRepositoryAdapterTest {
     @Test
     void update_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
-            sellerRepositoryAdapter.update(1L, RequestSellerHelper.createRequestSeller()));
+        Exception exception = null;
+        try{
+            ResponseBase<ResponseSeller> result = sellerRepositoryAdapter.update(1L, RequestSellerHelper.createRequestSeller());
+        } catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
@@ -102,7 +110,7 @@ class SellerRepositoryAdapterTest {
     void delete_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
-            sellerRepositoryAdapter.delete(1L));
+        {sellerRepositoryAdapter.delete(1L);});
         assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 }

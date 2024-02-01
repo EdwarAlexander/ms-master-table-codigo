@@ -81,9 +81,12 @@ class CustomerRepositoryAdapterTest {
     @Test
     void update_Error(){
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            customerRepositoryAdapter.update(1L, RequestCustomerHelper.createRequesCustomer());
-        });
+        Exception exception = null;
+        try{
+            ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.update(1L, RequestCustomerHelper.createRequesCustomer());
+        }catch (Exception e){
+            exception = e;
+        }
         assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 

@@ -6,7 +6,6 @@ public class DateUtil {
     private DateUtil(){}
     public static Timestamp getTimestamp(){
         long currentTime = System.currentTimeMillis();
-        Timestamp timestamp = new Timestamp(currentTime);
-        return timestamp;
+        return new Timestamp(currentTime);
     }
 }

@@ -51,11 +51,9 @@ class PublicityRepositoryAdapterTest {
     @Test
     void get_Error(){
         Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        /*IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
-            publicityRepositoryAdapter.get(1L));
-        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());*/
-       assertThrows(IdNotFoundException.class, () -> {
-                publicityRepositoryAdapter.get(1L);},"No existe el id en la tabla PUBLICIDAD");
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
+        {publicityRepositoryAdapter.get(1L);});
+        assertEquals("No existe el id en la tabla PUBLICIDAD", exception.getMessage());
     }
 
     @Test
@@ -83,9 +81,13 @@ class PublicityRepositoryAdapterTest {
     @Test
     void update_Error(){
         Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        /*IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity()));
-        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());*/
-        assertThrows(IdNotFoundException.class, () -> {publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());},"No existe el id en la tabla PUBLICIDAD");
+        Exception exception = null;
+        try{
+            ResponseBase<ResponsePublicity> result = publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());
+        }catch (Exception e){
+            exception = e;
+        }
+        assertEquals("No existe el id en la tabla PUBLICIDAD", exception.getMessage());
     }
 
     @Test

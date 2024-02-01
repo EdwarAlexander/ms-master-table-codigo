@@ -89,8 +89,9 @@ class CapturesRepositoryAdapterTest {
     @Test
     void update_Error_Capture(){
         Mockito.when(capturesRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
-        Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
+        //Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        //Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(SellerEntityHelper.createSellersEntity()));
+
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
         });
