@@ -5,6 +5,10 @@ import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.DateUtil;
 
 public class PublicityAuditHelper {
+
+    private PublicityAuditHelper(){
+
+    }
     public static void setPublicityAuditCreate(PublicityEntity publicityEntity, String user){
         publicityEntity.setDateCreate(DateUtil.getTimestamp());
         publicityEntity.setUserCreate(user);

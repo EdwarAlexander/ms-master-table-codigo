@@ -11,13 +11,11 @@ import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.entity.SellersEntity;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CapturesMapper {
 
+    private CapturesMapper(){}
     public static CapturesEntity mapToCaptureEntity(RequestCaptures requestCaptures, CustomerEntity customerEntity, SellersEntity sellersEntity) {
         if(requestCaptures == null){
             return null;
@@ -88,7 +86,7 @@ public class CapturesMapper {
 
     public static List<ResponseCaptures> mapToResponseCapturesList(List<CapturesEntity> capturesEntityList){
         if(capturesEntityList == null){
-            return null;
+            return Collections.emptyList();
         }
         List<ResponseCaptures> responseCapturesList = new ArrayList<>();
         for(CapturesEntity captures: capturesEntityList){

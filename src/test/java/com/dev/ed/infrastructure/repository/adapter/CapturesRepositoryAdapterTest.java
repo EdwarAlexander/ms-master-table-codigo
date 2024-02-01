@@ -59,7 +59,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.get(1L);
         });
-        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
+        assertEquals("No existe el id en la tabla CAPTACION", exception.getMessage());
     }
 
     @Test
@@ -94,7 +94,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
         });
-        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
+        assertEquals("No existe el id en la tabla CAPTACION", exception.getMessage());
     }
 
     @Test
@@ -105,7 +105,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
         });
-        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+        assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
     @Test
@@ -116,7 +116,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.update(1L, RequestCapturesHelper.createRequestCaptures());
         });
-        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+        assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
     @Test
     void create(){
@@ -133,7 +133,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
         });
-        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+        assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
     @Test
@@ -143,7 +143,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.create(RequestCapturesHelper.createRequestCaptures());
         });
-        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+        assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
     @Test
@@ -159,7 +159,7 @@ class CapturesRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             capturesRepositoryAdapter.delete(1L);
         });
-        assertEquals("No existe el id en la tabla captacion", exception.getMessage());
+        assertEquals("No existe el id en la tabla CAPTACION", exception.getMessage());
     }
 
     @Test

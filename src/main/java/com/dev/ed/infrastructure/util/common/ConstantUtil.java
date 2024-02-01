@@ -2,6 +2,7 @@ package com.dev.ed.infrastructure.util.common;
 
 public class ConstantUtil {
 
+    private ConstantUtil(){}
     public static final String DEFAULT_ASCENDING_VALUE = "asc";
 
     public static final String DEFAULT_DESCENDING_VALUE = "desc";

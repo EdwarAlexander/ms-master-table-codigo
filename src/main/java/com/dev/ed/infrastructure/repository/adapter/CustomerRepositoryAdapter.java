@@ -40,7 +40,7 @@ public class CustomerRepositoryAdapter implements CustomerOut {
     @Override
     public ResponseBase<ResponseCustomer> update(Long code, RequestCustomer request) {
         ResponseBase<ResponseCustomer> result = new ResponseBase<>();
-        CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(() -> new IdNotFoundException(TablesName.cliente.name()));
+        CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(() -> new IdNotFoundException(TablesName.CLIENTE.name()));
         CustomerEntity customerEntityUpdate = CustomerMapper.MAPPER.mapRequestToEntity(request, customerEntity);
         CustomerAuditHelper.setCustomerAuditModif(customerEntityUpdate, ConstantUtil.DEFAULT_USER);
         ResponseCustomer responseCustomerUpdated = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customerEntityUpdate));
@@ -52,7 +52,7 @@ public class CustomerRepositoryAdapter implements CustomerOut {
     @Override
     public ResponseBase<ResponseCustomer> get(Long code) {
         ResponseBase<ResponseCustomer> result = new ResponseBase<>();
-        CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.cliente.name()));
+        CustomerEntity customerEntity = customerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.CLIENTE.name()));
         ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerEntity);
         result.setData(responseCustomer);
         result.setMessage("registro encontrado");

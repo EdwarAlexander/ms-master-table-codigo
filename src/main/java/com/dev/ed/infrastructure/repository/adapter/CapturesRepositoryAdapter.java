@@ -36,10 +36,10 @@ public class CapturesRepositoryAdapter implements CapturesOut {
     @Override
     public ResponseBase<ResponseCaptures> create(RequestCaptures request) {
         ResponseBase<ResponseCaptures> result = new ResponseBase<>();
-        CustomerEntity customerEntity = customerRepository.findById(request.getCustomer_id()).orElseThrow(()-> new IdNotFoundException(TablesName.cliente.name()));
-        SellersEntity sellersEntity = sellerRepository.findById(request.getSeller_id()).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        CustomerEntity customerEntity = customerRepository.findById(request.getCustomerId()).orElseThrow(()-> new IdNotFoundException(TablesName.CLIENTE.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(request.getSellerId()).orElseThrow(()-> new IdNotFoundException(TablesName.VENDEDOR.name()));
         CapturesEntity capturesEntity = CapturesMapper.mapToCaptureEntity(request, customerEntity, sellersEntity);
-        CapturesAuditHelper.SetCapturesAuditCreate(capturesEntity, ConstantUtil.DEFAULT_USER);
+        CapturesAuditHelper.setCapturesAuditCreate(capturesEntity, ConstantUtil.DEFAULT_USER);
         ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesRepository.save(capturesEntity));
         result.setMessage("registro ok");
         result.setData(responseCaptures);
@@ -49,9 +49,9 @@ public class CapturesRepositoryAdapter implements CapturesOut {
     @Override
     public ResponseBase<ResponseCaptures> update(Long code, RequestCaptures request) {
         ResponseBase<ResponseCaptures> result = new ResponseBase<>();
-        CapturesEntity capturesEntity = capturesRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.captacion.name()));
-        CustomerEntity customerEntity = customerRepository.findById(request.getCustomer_id()).orElseThrow(()-> new IdNotFoundException(TablesName.cliente.name()));
-        SellersEntity sellersEntity = sellerRepository.findById(request.getSeller_id()).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        CapturesEntity capturesEntity = capturesRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.CAPTACION.name()));
+        CustomerEntity customerEntity = customerRepository.findById(request.getCustomerId()).orElseThrow(()-> new IdNotFoundException(TablesName.CLIENTE.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(request.getSellerId()).orElseThrow(()-> new IdNotFoundException(TablesName.VENDEDOR.name()));
         CapturesEntity capturesEntityUpdated = CapturesMapper.mapToCaptureEntityUpdated(request, customerEntity, sellersEntity, capturesEntity);
         CapturesAuditHelper.setCapturesAuditModif(capturesEntityUpdated, ConstantUtil.DEFAULT_USER);
         ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesRepository.save(capturesEntityUpdated));
@@ -63,7 +63,7 @@ public class CapturesRepositoryAdapter implements CapturesOut {
     @Override
     public ResponseBase<ResponseCaptures> get(Long code) {
         ResponseBase<ResponseCaptures> result = new ResponseBase<>();
-        CapturesEntity capturesEntity = capturesRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.captacion.name()));
+        CapturesEntity capturesEntity = capturesRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.CAPTACION.name()));
         ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesEntity);
         result.setMessage("registro encontrado");
         result.setData(responseCaptures);
@@ -115,7 +115,7 @@ public class CapturesRepositoryAdapter implements CapturesOut {
     @Override
     public ResponseBase<ResponseCaptures> delete(Long id) {
         ResponseBase<ResponseCaptures> result = new ResponseBase<>();
-        CapturesEntity capturesEntity = capturesRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.captacion.name()));
+        CapturesEntity capturesEntity = capturesRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.CAPTACION.name()));
         CapturesEntity capturesEntityUpdated = CapturesMapper.mapToCaptureEntityDelete(capturesEntity);
         CapturesAuditHelper.setCapturesAuditDel(capturesEntityUpdated, ConstantUtil.DEFAULT_USER);
         ResponseCaptures responseCaptures = CapturesMapper.mapToResponseCaptures(capturesRepository.save(capturesEntityUpdated));

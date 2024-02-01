@@ -54,7 +54,7 @@ class CustomerRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             customerRepositoryAdapter.get(1L);
         });
-        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+        assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
     @Test
@@ -84,7 +84,7 @@ class CustomerRepositoryAdapterTest {
         IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
             customerRepositoryAdapter.update(1L, RequestCustomerHelper.createRequesCustomer());
         });
-        assertEquals("No existe el id en la tabla cliente", exception.getMessage());
+        assertEquals("No existe el id en la tabla CLIENTE", exception.getMessage());
     }
 
     @Test

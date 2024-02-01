@@ -2,10 +2,8 @@ package com.dev.ed.infrastructure.repository.adapter;
 
 import com.dev.ed.domain.model.request.RequestPublicity;
 import com.dev.ed.domain.model.response.ResponseBase;
-import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.model.response.ResponsePublicity;
 import com.dev.ed.domain.ports.out.PublicityOut;
-import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.helper.audithelper.PublicityAuditHelper;
 import com.dev.ed.infrastructure.repository.PublicityRepository;
@@ -13,7 +11,6 @@ import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.OperationUtil;
 import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
-import com.dev.ed.infrastructure.util.mapper.CustomerMapper;
 import com.dev.ed.infrastructure.util.mapper.PaginationMapper;
 import com.dev.ed.infrastructure.util.mapper.PublicityMapper;
 import lombok.AllArgsConstructor;
@@ -43,7 +40,7 @@ public class PublicityRepositoryAdapter implements PublicityOut {
     @Override
     public ResponseBase<ResponsePublicity> update(Long code, RequestPublicity request) {
         ResponseBase<ResponsePublicity> result = new ResponseBase<>();
-        PublicityEntity publicityEntity = publicityRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.publicidad.name()));
+        PublicityEntity publicityEntity = publicityRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.PUBLICIDAD.name()));
         PublicityEntity publicityEntityUpdate = PublicityMapper.MAPPER.mapRequestToEntity(request, publicityEntity);
         PublicityAuditHelper.setPublicityAuditModif(publicityEntityUpdate, ConstantUtil.DEFAULT_USER);
         ResponsePublicity responsePublicity = PublicityMapper.MAPPER.mapToResponsePublicity(publicityRepository.save(publicityEntityUpdate));
@@ -55,7 +52,7 @@ public class PublicityRepositoryAdapter implements PublicityOut {
     @Override
     public ResponseBase<ResponsePublicity> get(Long code) {
         ResponseBase<ResponsePublicity> result = new ResponseBase<>();
-        PublicityEntity publicityEntity = publicityRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.publicidad.name()));
+        PublicityEntity publicityEntity = publicityRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.PUBLICIDAD.name()));
         ResponsePublicity responsePublicity = PublicityMapper.MAPPER.mapToResponsePublicity(publicityEntity);
         result.setMessage("registro encontrado");
         result.setData(responsePublicity);

@@ -50,10 +50,8 @@ class SellerRepositoryAdapterTest {
     @Test
     void get_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            sellerRepositoryAdapter.get(1L);
-        });
-        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> sellerRepositoryAdapter.get(1L));
+        assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
     @Test
@@ -82,10 +80,9 @@ class SellerRepositoryAdapterTest {
     void update_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            sellerRepositoryAdapter.update(1L, RequestSellerHelper.createRequestSeller());
-        });
-        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
+            sellerRepositoryAdapter.update(1L, RequestSellerHelper.createRequestSeller()));
+        assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 
     @Test
@@ -104,9 +101,8 @@ class SellerRepositoryAdapterTest {
     @Test
     void delete_Error(){
         Mockito.when(sellerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            sellerRepositoryAdapter.delete(1L);
-        });
-        assertEquals("No existe el id en la tabla vendedor", exception.getMessage());
+        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
+            sellerRepositoryAdapter.delete(1L));
+        assertEquals("No existe el id en la tabla VENDEDOR", exception.getMessage());
     }
 }

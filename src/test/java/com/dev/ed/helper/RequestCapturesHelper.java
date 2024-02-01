@@ -11,8 +11,8 @@ public class RequestCapturesHelper {
 
     public static RequestCaptures createRequestCaptures(){
         RequestCaptures request = new RequestCaptures();
-        request.setCustomer_id(1L);
-        request.setSeller_id(1L);
+        request.setCustomerId(1L);
+        request.setSellerId(1L);
         request.setDateCapture(LocalDate.of(2024,1,20));
         request.setPublicities(createRequestPublicitySet());
         return request;

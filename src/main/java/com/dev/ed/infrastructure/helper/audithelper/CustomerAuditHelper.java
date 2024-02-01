@@ -5,6 +5,7 @@ import com.dev.ed.infrastructure.util.common.DateUtil;
 
 public class CustomerAuditHelper {
 
+    private CustomerAuditHelper(){}
     public static void setCustomerAuditCreate(CustomerEntity customerEntity, String user){
         customerEntity.setDateCreate(DateUtil.getTimestamp());
         customerEntity.setUserCreate(user);

@@ -1,13 +1,15 @@
 package com.dev.ed.infrastructure.helper.audithelper;
 
 import com.dev.ed.infrastructure.entity.CapturesEntity;
-import com.dev.ed.infrastructure.entity.SellersEntity;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.DateUtil;
 
 public class CapturesAuditHelper {
 
-    public static void SetCapturesAuditCreate(CapturesEntity capturesEntity, String user){
+    private CapturesAuditHelper(){
+
+    }
+    public static void setCapturesAuditCreate(CapturesEntity capturesEntity, String user){
         capturesEntity.setDateCreate(DateUtil.getTimestamp());
         capturesEntity.setUserCreate(user);
         capturesEntity.setStatus(ConstantUtil.DEFAULT_STATUS_ACTIVE);

@@ -1,9 +1,9 @@
 package com.dev.ed.infrastructure.util.enums;
 
 public enum TablesName {
-    cliente,
-    publicidad,
-    vendedor,
+    CLIENTE,
+    PUBLICIDAD,
+    VENDEDOR,
 
-    captacion
+    CAPTACION
 }

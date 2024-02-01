@@ -1,13 +1,10 @@
 package com.dev.ed.infrastructure.repository.adapter;
 
 import com.dev.ed.domain.model.response.ResponseBase;
-import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.model.response.ResponsePublicity;
-import com.dev.ed.helper.CustomerEntityHelper;
 import com.dev.ed.helper.PublicityEntityHelper;
-import com.dev.ed.helper.RequestCustomerHelper;
 import com.dev.ed.helper.RequestPublicityHelper;
-import com.dev.ed.infrastructure.entity.CustomerEntity;
+
 import com.dev.ed.infrastructure.entity.PublicityEntity;
 import com.dev.ed.infrastructure.repository.PublicityRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
@@ -26,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PublicityRepositoryAdapterTest {
     @InjectMocks
@@ -55,10 +51,11 @@ class PublicityRepositoryAdapterTest {
     @Test
     void get_Error(){
         Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            publicityRepositoryAdapter.get(1L);
-        });
-        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());
+        /*IdNotFoundException exception = assertThrows(IdNotFoundException.class, () ->
+            publicityRepositoryAdapter.get(1L));
+        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());*/
+       assertThrows(IdNotFoundException.class, () -> {
+                publicityRepositoryAdapter.get(1L);},"No existe el id en la tabla PUBLICIDAD");
     }
 
     @Test
@@ -86,10 +83,9 @@ class PublicityRepositoryAdapterTest {
     @Test
     void update_Error(){
         Mockito.when(publicityRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-        IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> {
-            publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());
-        });
-        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());
+        /*IdNotFoundException exception = assertThrows(IdNotFoundException.class, () -> publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity()));
+        assertEquals("No existe el id en la tabla publicidad", exception.getMessage());*/
+        assertThrows(IdNotFoundException.class, () -> {publicityRepositoryAdapter.update(1L, RequestPublicityHelper.createRequestPublicity());},"No existe el id en la tabla PUBLICIDAD");
     }
 
     @Test

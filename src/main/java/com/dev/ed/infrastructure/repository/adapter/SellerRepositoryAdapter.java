@@ -41,7 +41,7 @@ public class SellerRepositoryAdapter implements SellerOut {
     @Override
     public ResponseBase<ResponseSeller> update(Long code, RequestSeller request) {
         ResponseBase<ResponseSeller> result = new ResponseBase<>();
-        SellersEntity sellersEntity = sellerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.VENDEDOR.name()));
         SellersEntity sellersEntityUpdated = SellerMapper.MAPPER.mapRequestToEntity(request, sellersEntity);
         SellerAuditHelper.setSellerAuditModif(sellersEntityUpdated, ConstantUtil.DEFAULT_USER);
         ResponseSeller responseSeller = SellerMapper.MAPPER.mapToResponseSeller(sellerRepository.save(sellersEntityUpdated));
@@ -53,7 +53,7 @@ public class SellerRepositoryAdapter implements SellerOut {
     @Override
     public ResponseBase<ResponseSeller> get(Long code) {
         ResponseBase<ResponseSeller> result = new ResponseBase<>();
-        SellersEntity sellersEntity = sellerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(code).orElseThrow(()-> new IdNotFoundException(TablesName.VENDEDOR.name()));
         ResponseSeller responseSeller = SellerMapper.MAPPER.mapToResponseSeller(sellersEntity);
         result.setMessage("Registro encontrado");
         result.setData(responseSeller);
@@ -89,7 +89,7 @@ public class SellerRepositoryAdapter implements SellerOut {
     @Override
     public ResponseBase<ResponseSeller> delete(Long id) {
         ResponseBase<ResponseSeller> result = new ResponseBase<>();
-        SellersEntity sellersEntity = sellerRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.vendedor.name()));
+        SellersEntity sellersEntity = sellerRepository.findById(id).orElseThrow(()-> new IdNotFoundException(TablesName.VENDEDOR.name()));
         SellerAuditHelper.setSellerAuditDel(sellersEntity, ConstantUtil.DEFAULT_USER);
         ResponseSeller responseSeller = SellerMapper.MAPPER.mapToResponseSeller(sellerRepository.save(sellersEntity));
         result.setMessage("Registro eliminado con Exito");
