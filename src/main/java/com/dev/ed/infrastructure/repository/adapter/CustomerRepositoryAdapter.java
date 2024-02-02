@@ -5,7 +5,10 @@ import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.ports.out.CustomerOut;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
+import com.dev.ed.infrastructure.feignclient.ReniecClient;
 import com.dev.ed.infrastructure.helper.audithelper.CustomerAuditHelper;
+import com.dev.ed.infrastructure.helper.mappers.CustomerApiMapper;
+import com.dev.ed.infrastructure.helper.response.ReniecResponseHelper;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.OperationUtil;
@@ -14,18 +17,27 @@ import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import com.dev.ed.infrastructure.util.mapper.CustomerMapper;
 import com.dev.ed.infrastructure.util.mapper.PaginationMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
-@AllArgsConstructor
 public class CustomerRepositoryAdapter implements CustomerOut {
+    public CustomerRepositoryAdapter(CustomerRepository customerRepository, ReniecClient reniecClient) {
+        this.customerRepository = customerRepository;
+        this.reniecClient = reniecClient;
+    }
 
     private final CustomerRepository customerRepository;
+    private final ReniecClient reniecClient;
+
+    @Value("${token.api.reniec}")
+    public String tokenReniec;
     @Override
     public ResponseBase<ResponseCustomer> create(RequestCustomer request) {
         ResponseBase<ResponseCustomer> result = new ResponseBase<>();
@@ -83,5 +95,30 @@ public class CustomerRepositoryAdapter implements CustomerOut {
             result.setData(CustomerMapper.MAPPER.mapToResponseCustomerList(customerEntityPage.getContent()));
         }
         return result;
+    }
+
+    @Override
+    public ResponseBase<ResponseCustomer> createToApiClient(String document) {
+        ResponseBase<ResponseCustomer> result = new ResponseBase<>();
+        Optional<CustomerEntity> customerEntity = customerRepository.findByDocumento(document);
+        if(customerEntity.isPresent()){
+            ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerEntity.get());
+            result.setMessage("Registro encontrado");
+            result.setData(responseCustomer);
+            return result;
+        } else {
+            CustomerEntity customer = getApiClient(document);
+            CustomerAuditHelper.setCustomerAuditCreate(customer, ConstantUtil.DEFAULT_USER);
+            ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerRepository.save(customer));
+            result.setMessage("Registro encontrado APi");
+            result.setData(responseCustomer);
+            return result;
+        }
+    }
+
+    private CustomerEntity getApiClient(String document){
+        String token = "Bearer "+tokenReniec;
+        ReniecResponseHelper reniecResponseHelper = reniecClient.getInfoReniec(document,token);
+        return CustomerApiMapper.mapToCustomerEntityApi(reniecResponseHelper);
     }
 }

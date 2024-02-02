@@ -3,8 +3,10 @@ package com.dev.ed.infrastructure.repository.adapter;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.helper.CustomerEntityHelper;
+import com.dev.ed.helper.ReniecResponseAPIHelper;
 import com.dev.ed.helper.RequestCustomerHelper;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
+import com.dev.ed.infrastructure.feignclient.ReniecClient;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
@@ -29,6 +31,8 @@ class CustomerRepositoryAdapterTest {
     private CustomerRepositoryAdapter customerRepositoryAdapter;
     @Mock
     private CustomerRepository customerRepository;
+    @Mock
+    private ReniecClient reniecClient;
 
     @BeforeEach
     void setUp(){
@@ -93,6 +97,21 @@ class CustomerRepositoryAdapterTest {
     @Test
     void create(){
         ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.create(RequestCustomerHelper.createRequesCustomer());
+        assertNotNull(result);
+    }
+
+    @Test
+    void createToApiClient(){
+        Mockito.when(customerRepository.findByDocumento(Mockito.anyString())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.createToApiClient("12345678");
+        assertNotNull(result);
+    }
+
+    @Test
+    void createToApiClient_API(){
+        Mockito.when(customerRepository.findByDocumento(Mockito.anyString())).thenReturn(Optional.empty());
+        Mockito.when(reniecClient.getInfoReniec(Mockito.anyString(),Mockito.anyString())).thenReturn(ReniecResponseAPIHelper.createReniecResponseHelper());
+        ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.createToApiClient("12345678");
         assertNotNull(result);
     }
 }

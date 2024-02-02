@@ -39,4 +39,9 @@ public class CustomerServiceImpl implements CustomerIn {
     public ResponseBase<List<ResponseCustomer>> getAllPagination(Integer page, Integer limit, String sort) {
         return customerOut.getAllPagination(page, limit, sort);
     }
+
+    @Override
+    public ResponseBase<ResponseCustomer> createToApiClient(String document) {
+        return customerOut.createToApiClient(document);
+    }
 }

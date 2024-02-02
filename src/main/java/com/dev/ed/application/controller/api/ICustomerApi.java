@@ -24,4 +24,7 @@ public interface ICustomerApi {
 
     @GetMapping("/pagination")
     public ResponseEntity<ResponseBase<List<ResponseCustomer>>> getAllPagination(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "limit", required = false) Integer limit, @RequestParam(value = "sort", required = false) String sort);
+
+    @PostMapping("/api")
+    public ResponseEntity<ResponseBase<ResponseCustomer>> createToApiClient(@RequestParam("document") String document);
 }

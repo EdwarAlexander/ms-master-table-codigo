@@ -47,4 +47,10 @@ public class CustomerController implements ICustomerApi {
         ResponseBase<List<ResponseCustomer>> responseBase = customerService.getAllPagination(page != null ? page : ConstantUtil.DEFAULT_PAGE, limit != null ? limit : ConstantUtil.DEFAULT_LIMIT, sort != null ? sort.toLowerCase() : ConstantUtil.DEFAULT_ASCENDING_VALUE);
         return new ResponseEntity<>(responseBase, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<ResponseBase<ResponseCustomer>> createToApiClient(String document) {
+        ResponseBase<ResponseCustomer> responseBase = customerService.createToApiClient(document);
+        return new ResponseEntity<>(responseBase, HttpStatus.CREATED);
+    }
 }

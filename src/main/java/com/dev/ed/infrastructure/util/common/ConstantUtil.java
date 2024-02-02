@@ -1,5 +1,6 @@
 package com.dev.ed.infrastructure.util.common;
 
+
 public class ConstantUtil {
 
     private ConstantUtil(){}
@@ -17,4 +18,5 @@ public class ConstantUtil {
 
     //variable por default de usuario
     public static final String DEFAULT_USER = "emoran";
+
 }
