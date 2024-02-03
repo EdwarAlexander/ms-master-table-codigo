@@ -1,5 +1,6 @@
 package com.dev.ed.domain.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,5 +16,6 @@ public class ResponseBase<T> {
 
     private T data;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ResponsePagination pagination;
 }
