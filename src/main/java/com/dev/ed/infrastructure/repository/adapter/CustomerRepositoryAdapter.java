@@ -4,6 +4,7 @@ import com.dev.ed.domain.model.request.RequestCustomer;
 import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.domain.ports.out.CustomerOut;
+import com.dev.ed.infrastructure.config.RedisService;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.feignclient.ReniecClient;
 import com.dev.ed.infrastructure.helper.audithelper.CustomerAuditHelper;
@@ -12,11 +13,11 @@ import com.dev.ed.infrastructure.helper.response.ReniecResponseHelper;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
 import com.dev.ed.infrastructure.util.common.ConstantUtil;
 import com.dev.ed.infrastructure.util.common.OperationUtil;
+import com.dev.ed.infrastructure.util.common.RedisUtil;
 import com.dev.ed.infrastructure.util.enums.TablesName;
 import com.dev.ed.infrastructure.util.exception.IdNotFoundException;
 import com.dev.ed.infrastructure.util.mapper.CustomerMapper;
 import com.dev.ed.infrastructure.util.mapper.PaginationMapper;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,13 +29,16 @@ import java.util.Optional;
 
 @Component
 public class CustomerRepositoryAdapter implements CustomerOut {
-    public CustomerRepositoryAdapter(CustomerRepository customerRepository, ReniecClient reniecClient) {
+    public CustomerRepositoryAdapter(CustomerRepository customerRepository, ReniecClient reniecClient, RedisService redisService) {
         this.customerRepository = customerRepository;
         this.reniecClient = reniecClient;
+        this.redisService = redisService;
     }
 
     private final CustomerRepository customerRepository;
     private final ReniecClient reniecClient;
+
+    private final RedisService redisService;
 
     @Value("${token.api.reniec}")
     public String tokenReniec;
@@ -114,6 +118,26 @@ public class CustomerRepositoryAdapter implements CustomerOut {
             result.setData(responseCustomer);
             return result;
         }
+    }
+
+    @Override
+    public ResponseBase<ResponseCustomer> getDocumentCustomer(String document) {
+        ResponseBase<ResponseCustomer> result = new ResponseBase<>();
+        String redisCache = redisService.getValueByKey(ConstantUtil.REDIS_KEY_INFO_RENIEC+document);
+        if(redisCache!= null){
+            CustomerEntity customerEntityRedis = RedisUtil.convertFromJson(redisCache, CustomerEntity.class);
+            ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerEntityRedis);
+            result.setMessage("Registro encontrado Redis");
+            result.setData(responseCustomer);
+        } else {
+            Optional<CustomerEntity> customerEntity = customerRepository.findByDocumento(document);
+            String redisData = RedisUtil.convertToJson(customerEntity.get());
+            redisService.saveKeyValue(ConstantUtil.REDIS_KEY_INFO_RENIEC+document,redisData,1);
+            ResponseCustomer responseCustomer = CustomerMapper.MAPPER.mapToResponseCustomer(customerEntity.get());
+            result.setMessage("Registro encontrado Guardado Redis");
+            result.setData(responseCustomer);
+        }
+        return result;
     }
 
     private CustomerEntity getApiClient(String document){

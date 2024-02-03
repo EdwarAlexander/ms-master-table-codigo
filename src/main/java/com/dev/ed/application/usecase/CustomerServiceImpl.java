@@ -44,4 +44,9 @@ public class CustomerServiceImpl implements CustomerIn {
     public ResponseBase<ResponseCustomer> createToApiClient(String document) {
         return customerOut.createToApiClient(document);
     }
+
+    @Override
+    public ResponseBase<ResponseCustomer> getDocumentCustomer(String document) {
+        return customerOut.getDocumentCustomer(document);
+    }
 }

@@ -5,6 +5,7 @@ import com.dev.ed.domain.model.response.ResponseCustomer;
 import com.dev.ed.helper.CustomerEntityHelper;
 import com.dev.ed.helper.ReniecResponseAPIHelper;
 import com.dev.ed.helper.RequestCustomerHelper;
+import com.dev.ed.infrastructure.config.RedisService;
 import com.dev.ed.infrastructure.entity.CustomerEntity;
 import com.dev.ed.infrastructure.feignclient.ReniecClient;
 import com.dev.ed.infrastructure.repository.CustomerRepository;
@@ -33,6 +34,8 @@ class CustomerRepositoryAdapterTest {
     private CustomerRepository customerRepository;
     @Mock
     private ReniecClient reniecClient;
+    @Mock
+    private RedisService redisService;
 
     @BeforeEach
     void setUp(){
@@ -112,6 +115,23 @@ class CustomerRepositoryAdapterTest {
         Mockito.when(customerRepository.findByDocumento(Mockito.anyString())).thenReturn(Optional.empty());
         Mockito.when(reniecClient.getInfoReniec(Mockito.anyString(),Mockito.anyString())).thenReturn(ReniecResponseAPIHelper.createReniecResponseHelper());
         ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.createToApiClient("12345678");
+        assertNotNull(result);
+    }
+
+    @Test
+    void getDocumentCustomer_GetRedis(){
+        String redis = "{\"id\":1,\"name\":\"Edwar\",\"lastName\":\"Moran\",\"telePhone\":\"972693024\",\"email\":\"dev.ed@gmail.com\",\"document\":\"45836796\",\"userCreate\":\"emoran\",\"dateCreate\":1705375813076,\"userModif\":null,\"dateModif\":null}";
+        Mockito.when(redisService.getValueByKey(Mockito.anyString())).thenReturn(redis);
+        ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.getDocumentCustomer("12345678");
+        assertNotNull(result);
+    }
+
+    @Test
+    void getDocumentCustomer_SaveRedis(){
+        String redis = null;
+        Mockito.when(redisService.getValueByKey(Mockito.anyString())).thenReturn(redis);
+        Mockito.when(customerRepository.findByDocumento(Mockito.anyString())).thenReturn(Optional.of(CustomerEntityHelper.createCustomerEntity()));
+        ResponseBase<ResponseCustomer> result = customerRepositoryAdapter.getDocumentCustomer("12345678");
         assertNotNull(result);
     }
 }

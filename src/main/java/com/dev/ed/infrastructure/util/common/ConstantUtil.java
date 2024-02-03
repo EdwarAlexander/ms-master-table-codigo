@@ -19,4 +19,6 @@ public class ConstantUtil {
     //variable por default de usuario
     public static final String DEFAULT_USER = "emoran";
 
+    public static final String REDIS_KEY_INFO_RENIEC="MS:REGISTER:INFORENIEC:";
+
 }

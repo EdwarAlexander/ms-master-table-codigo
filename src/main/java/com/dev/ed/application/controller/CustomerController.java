@@ -53,4 +53,10 @@ public class CustomerController implements ICustomerApi {
         ResponseBase<ResponseCustomer> responseBase = customerService.createToApiClient(document);
         return new ResponseEntity<>(responseBase, HttpStatus.CREATED);
     }
+
+    @Override
+    public ResponseEntity<ResponseBase<ResponseCustomer>> getDocumentCustomer(String document) {
+        ResponseBase<ResponseCustomer> responseBase = customerService.getDocumentCustomer(document);
+        return new ResponseEntity<>(responseBase, HttpStatus.OK);
+    }
 }

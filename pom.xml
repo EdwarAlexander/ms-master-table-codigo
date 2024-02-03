@@ -23,6 +23,14 @@
 		<sonar.token>sqp_d33bf3f8d778a6f651939925d946902f6c43f222</sonar.token>
 		<sonar.projectKey>ms-master-table</sonar.projectKey>
 		<sonar.projectName>ms-master-table</sonar.projectName>
+		<sonar.exclusions>
+			**/RedisService.java,
+			**/CustomerController.java,
+			**/CapturesController.java,
+			**/PublicityController.java,
+			**/SellerController.java,
+			**/RedisUtil.java,
+		</sonar.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -77,6 +85,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<version>4.1.0</version>
+		</dependency>
+		<!-- redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -27,4 +27,7 @@ public interface ICustomerApi {
 
     @PostMapping("/api")
     public ResponseEntity<ResponseBase<ResponseCustomer>> createToApiClient(@RequestParam("document") String document);
+
+    @GetMapping("/redis")
+    public ResponseEntity<ResponseBase<ResponseCustomer>> getDocumentCustomer(@RequestParam("document") String document);
 }
