@@ -5,6 +5,7 @@ import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponsePublicity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public interface IPublicityApi {
     @Operation(summary = "Metodo para registrar una publicidad")
     @PostMapping
-    public ResponseEntity<ResponseBase<ResponsePublicity>> create(@RequestBody RequestPublicity requestPublicity);
+    public ResponseEntity<ResponseBase<ResponsePublicity>> create(@Valid @RequestBody RequestPublicity requestPublicity);
     @Operation(summary = "Metodo para actualizar una publicidad")
     @PutMapping("/{id}")
     public ResponseEntity<ResponseBase<ResponsePublicity>> update(@PathVariable Long id, @RequestBody RequestPublicity requestPublicity);

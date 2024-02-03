@@ -6,6 +6,7 @@ import com.dev.ed.domain.model.response.ResponseCaptures;
 import com.dev.ed.domain.model.response.ResponseCapturesPage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,10 @@ public interface ICapturesApi {
 
     @Operation(summary = "Metodo para registrar una captación de cliente")
     @PostMapping
-    public ResponseEntity<ResponseBase<ResponseCaptures>> create(@RequestBody RequestCaptures requestCaptures) throws ParseException;
+    public ResponseEntity<ResponseBase<ResponseCaptures>> create(@Valid @RequestBody RequestCaptures requestCaptures) throws ParseException;
     @Operation(summary = "Metodo para actualizar una captación de cliente")
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseBase<ResponseCaptures>> update(@PathVariable Long id, @RequestBody RequestCaptures requestCaptures);
+    public ResponseEntity<ResponseBase<ResponseCaptures>> update(@Valid @PathVariable Long id, @RequestBody RequestCaptures requestCaptures);
     @Operation(summary = "Metodo para obtener una captación por su codigo")
     @GetMapping("/{id}")
     public ResponseEntity<ResponseBase<ResponseCaptures>> get(@PathVariable Long id);

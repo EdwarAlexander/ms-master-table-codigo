@@ -5,6 +5,7 @@ import com.dev.ed.domain.model.response.ResponseBase;
 import com.dev.ed.domain.model.response.ResponseCustomer;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +18,10 @@ public interface ICustomerApi {
 
     @Operation(summary = "Metodo para registrar de cliente")
     @PostMapping
-    public ResponseEntity<ResponseBase<ResponseCustomer>> create(@RequestBody RequestCustomer requestCustomer);
+    public ResponseEntity<ResponseBase<ResponseCustomer>> create(@Valid @RequestBody RequestCustomer requestCustomer);
     @Operation(summary = "Metodo para actualizar de cliente")
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseBase<ResponseCustomer>> update(@PathVariable Long id, @RequestBody RequestCustomer requestCustomer);
+    public ResponseEntity<ResponseBase<ResponseCustomer>> update(@Valid @PathVariable Long id, @RequestBody RequestCustomer requestCustomer);
     @Operation(summary = "Metodo para obtener un cliente por su codigo")
     @GetMapping("/{id}")
     public ResponseEntity<ResponseBase<ResponseCustomer>> get(@PathVariable Long id);
